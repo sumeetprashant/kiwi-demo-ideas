@@ -1,413 +1,878 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiwi: The Director's Canvas (Final Concepts)</title>
+    <title>KIWI: Cinematic Storyboard Experience</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-light: #F7F7F7;
-            --bg-dark: #121212;
-            --surface-light: rgba(255, 255, 255, 0.6);
-            --surface-dark: rgba(26, 26, 26, 0.7);
-            --text-light-primary: #1a1a1a;
-            --text-light-secondary: #555555;
-            --text-dark-primary: #EAEAEA;
-            --text-dark-secondary: #A0A0A0;
-            --brand-primary: #004D25;
-            --brand-accent-light: #4CAF50;
-            --brand-accent-dark: #66BB6A;
-            --border-light: rgba(0, 0, 0, 0.08);
-            --border-dark: rgba(255, 255, 255, 0.15);
-            --shadow-color-light: rgba(0,0,0,0.05);
-            --shadow-color-dark: rgba(0,0,0,0.25);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            background: #000;
+            color: #fff;
+            font-family: 'Oswald', sans-serif;
+            overflow-x: hidden;
+            cursor: crosshair;
         }
 
-        .light body {
-            background-color: var(--bg-light);
-            color: var(--text-light-primary);
-        }
-
-        .dark body {
-            background-color: var(--bg-dark);
-            color: var(--text-dark-primary);
-        }
-
-        .font-display {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .glass-surface {
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
-        }
-
-        .light .glass-surface {
-            background-color: var(--surface-light);
-            border: 1px solid var(--border-light);
-            box-shadow: 0 8px 32px 0 var(--shadow-color-light);
-        }
-
-        .dark .glass-surface {
-            background-color: var(--surface-dark);
-            border: 1px solid var(--border-dark);
-            box-shadow: 0 8px 32px 0 var(--shadow-color-dark);
-        }
-
-        .gradient-text {
-            background: linear-gradient(45deg, var(--brand-accent-light), var(--brand-primary));
+        /* MASSIVE TITLE TREATMENT */
+        .mega-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(120px, 20vw, 300px);
+            line-height: 0.8;
+            letter-spacing: -0.02em;
+            text-align: center;
+            background: linear-gradient(180deg, #4ADE80 0%, #22C55E 50%, #16A34A 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        
-        .dark .gradient-text {
-             background: linear-gradient(45deg, var(--brand-accent-dark), #98FB98);
-             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
+            text-shadow: 0 0 100px rgba(74, 222, 128, 0.5);
+            margin: 100px 0 50px 0;
         }
 
-        .subtle-gradient-text {
-            background: linear-gradient(90deg, #319795, #4fd1c5, #63b3ed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-
-        .dark .subtle-gradient-text {
-            background: linear-gradient(90deg, #81e6d9, #90cdf4, #a6c1ee);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-
-        .concept-tab {
-            transition: all 0.3s ease;
+        /* SCENE CONTAINER */
+        .scene-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
             position: relative;
-            padding-bottom: 8px;
+            padding: 50px 20px;
+            border-bottom: 5px solid #4ADE80;
         }
-        
-        .concept-tab::after {
-            content: '';
+
+        .scene-container:nth-child(odd) {
+            background: linear-gradient(135deg, #000 0%, #0A0A0A 100%);
+        }
+
+        .scene-container:nth-child(even) {
+            background: linear-gradient(135deg, #0A0A0A 0%, #111 100%);
+        }
+
+        /* MASSIVE SCENE NUMBERS */
+        .scene-mega-number {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            font-size: 200px;
+            font-weight: 900;
+            font-family: 'Bebas Neue', sans-serif;
+            color: #EF4444;
+            opacity: 0.2;
+            z-index: 1;
+            text-shadow: 0 0 50px rgba(239, 68, 68, 0.5);
+        }
+
+        /* SCENE CONTENT GRID */
+        .scene-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* VISUAL FRAME */
+        .visual-frame {
+            background: #000;
+            border: 8px solid #4ADE80;
+            border-radius: 4px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 
+                0 0 100px rgba(74, 222, 128, 0.3),
+                inset 0 0 50px rgba(0, 0, 0, 0.5);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .visual-frame::before {
+            content: 'VISUAL';
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            background: #000;
+            padding: 5px 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #4ADE80;
+            letter-spacing: 0.1em;
+        }
+
+        /* SHOT TYPE BADGES */
+        .shot-type {
+            background: #F59E0B;
+            color: #000;
+            padding: 10px 30px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 30px;
+            transform: rotate(-2deg);
+            box-shadow: 5px 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* FRAME DESCRIPTION */
+        .frame-desc {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #E5E7EB;
+            margin-bottom: 30px;
+            font-family: 'Crimson Text', serif;
+            font-style: italic;
+        }
+
+        .frame-desc strong {
+            color: #4ADE80;
+            font-style: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        /* TECHNICAL SPECS */
+        .tech-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: auto;
+        }
+
+        .spec-badge {
+            background: #8B5CF6;
+            color: #fff;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 30px;
+        }
+
+        /* CONTENT SIDE */
+        .content-side {
+            padding: 40px;
+        }
+
+        .scene-time {
+            font-size: 24px;
+            color: #4ADE80;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .scene-title {
+            font-size: clamp(48px, 5vw, 72px);
+            font-weight: 900;
+            font-family: 'Bebas Neue', sans-serif;
+            margin-bottom: 40px;
+            line-height: 0.9;
+            text-transform: uppercase;
+        }
+
+        /* DIRECTOR'S NOTE */
+        .director-note {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 6px solid #8B5CF6;
+            padding: 30px;
+            margin: 30px 0;
+            font-size: 18px;
+            font-style: italic;
+            color: #DDD6FE;
+            position: relative;
+            font-family: 'Crimson Text', serif;
+        }
+
+        .director-note::before {
+            content: 'DIRECTOR\'S NOTE';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #000;
+            padding: 5px 15px;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            color: #8B5CF6;
+            font-style: normal;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        /* DIALOGUE STYLING */
+        .dialogue-section {
+            margin: 40px 0;
+        }
+
+        .dialogue-label {
+            font-size: 16px;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .dialogue-bubble {
+            background: #fff;
+            color: #000;
+            padding: 25px 35px;
+            border-radius: 30px 30px 5px 30px;
+            margin: 20px 0;
+            font-size: 20px;
+            line-height: 1.6;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            font-family: 'Crimson Text', serif;
+        }
+
+        .dialogue-bubble.kiwi {
+            background: #4ADE80;
+            color: #000;
+            border-radius: 30px 30px 30px 5px;
+        }
+
+        .dialogue-bubble strong {
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        /* INFO BOXES */
+        .info-box {
+            background: rgba(31, 41, 55, 0.5);
+            border: 2px solid rgba(75, 85, 99, 0.5);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .info-box h4 {
+            font-size: 20px;
+            color: #4ADE80;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-box ul {
+            list-style: none;
+        }
+
+        .info-box li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .info-box li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #4ADE80;
+            font-size: 20px;
+        }
+
+        /* CAMERA MOVEMENT INDICATOR */
+        .camera-move {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.9);
+            border: 2px solid #4ADE80;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #4ADE80;
+        }
+
+        /* TIMING BAR */
+        .timing-bar {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            border-radius: 2px;
-            background: linear-gradient(45deg, var(--brand-accent-light), var(--brand-primary));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .dark .concept-tab::after {
-            background: linear-gradient(45deg, var(--brand-accent-dark), #98FB98);
+            height: 8px;
+            background: rgba(74, 222, 128, 0.2);
         }
 
-        .concept-tab.active {
-            color: var(--brand-primary);
-        }
-        
-        .dark .concept-tab.active {
-            color: var(--brand-accent-dark);
-        }
-
-        .concept-tab.active::after {
-            transform: scaleX(1);
+        .timing-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ADE80, #F59E0B);
+            width: 0;
+            transition: width 2s ease-out;
         }
 
-        .scene-row {
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .scene-row:hover {
-            transform: translateY(-5px);
-        }
-        .light .scene-row:hover {
-             box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1);
-        }
-        .dark .scene-row:hover {
-             box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3);
+        .scene-container.active .timing-fill {
+            width: 100%;
         }
 
-
-        .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            margin-right: 0.75rem;
-            flex-shrink: 0;
-        }
-        
-        .light .icon { color: var(--brand-primary); }
-        .dark .icon { color: var(--brand-accent-dark); }
-
-        /* Active Section Pulse Animation */
-        @keyframes pulse-glow-light {
-          0% {
-            box-shadow: 0 0 0 0px rgba(79, 209, 197, 0.5), 0 8px 32px 0 var(--shadow-color-light);
-          }
-          100% {
-            box-shadow: 0 0 0 6px rgba(79, 209, 197, 0), 0 8px 32px 0 var(--shadow-color-light);
-          }
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .scene-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .scene-mega-number {
+                font-size: 100px;
+                top: 20px;
+                left: 20px;
+            }
+            
+            .visual-frame {
+                min-height: 400px;
+            }
         }
 
-        @keyframes pulse-glow-dark {
-          0% {
-            box-shadow: 0 0 0 0px rgba(129, 230, 217, 0.4), 0 8px 32px 0 var(--shadow-color-dark);
-          }
-          100% {
-            box-shadow: 0 0 0 6px rgba(129, 230, 217, 0), 0 8px 32px 0 var(--shadow-color-dark);
-          }
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #4ADE80;
+            color: #000;
+            padding: 15px 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            z-index: 100;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .active-scene {
-            animation-duration: 2s;
-            animation-iteration-count: infinite;
-            animation-timing-function: ease-in-out;
+        .scroll-indicator:hover {
+            background: #22C55E;
+            transform: scale(1.1);
         }
-
-        .light .active-scene {
-            border-color: #4fd1c5 !important;
-            animation-name: pulse-glow-light;
-        }
-        
-        .dark .active-scene {
-            border-color: #81e6d9 !important;
-            animation-name: pulse-glow-dark;
-        }
-
     </style>
 </head>
-<body class="antialiased">
+<body>
+    <!-- MASSIVE TITLE -->
+    <h1 class="mega-title">KIWI</h1>
+    <p style="text-align: center; font-size: 24px; color: #F59E0B; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 100px;">
+        THE CINEMATIC STORYBOARD
+    </p>
 
-    <header class="glass-surface p-4 sticky top-4 mx-4 md:mx-10 rounded-2xl z-20">
-        <div class="container mx-auto flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-display tracking-wide gradient-text">Kiwi</h1>
-                <h2 class="text-lg font-sans -mt-1 subtle-gradient-text">Product Demo Concepts</h2>
-            </div>
-            <nav class="flex items-center">
-                <div id="concept-tabs" class="flex space-x-4 md:space-x-6 border-r light:border-gray-200 dark:border-gray-700 pr-4 md:pr-6 mr-4 md:mr-6">
-                    <button data-concept="concept2" class="concept-tab text-sm md:text-base font-semibold active">1: Life Uninterrupted</button>
-                    <button data-concept="concept3" class="concept-tab text-sm md:text-base font-semibold">2: Through Her Eyes</button>
-                    <button data-concept="concept1" class="concept-tab text-sm md:text-base font-semibold">3: The Promise</button>
+    <!-- SCENE 1 -->
+    <div class="scene-container" id="scene1">
+        <div class="scene-mega-number">1</div>
+        <div class="scene-grid">
+            <div class="visual-frame">
+                <div class="camera-move">SLOW PUSH IN</div>
+                <div class="shot-type">OTS - OVER THE SHOULDER</div>
+                <div class="frame-desc">
+                    <strong>FRAME:</strong> We see the weathered profile of our 85-year-old founder, shot from behind his right shoulder. He stands on a modest balcony overlooking the assisted living facility's garden. Golden hour light bathes his face in warm amber tones, creating a rim light around his silver hair.
                 </div>
-                 <button id="theme-toggle" class="p-2 rounded-full focus:outline-none focus:ring-2 light:focus:ring-brand-primary dark:focus:ring-brand-accent-dark transition-colors">
-                    <svg id="theme-icon-light" class="h-6 w-6 light:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                    <svg id="theme-icon-dark" class="h-6 w-6 hidden dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                </button>
-            </nav>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div class="frame-thirds vertical" style="left: 0;"></div>
+                    <div class="frame-thirds vertical" style="left: 33.33%;"></div>
+                    <div class="frame-thirds horizontal" style="top: 0;"></div>
+                    <div class="frame-thirds horizontal" style="top: 33.33%;"></div>
+                    <div class="frame-subject" style="width: 30%; height: 60%; top: 20%; left: 5%; opacity: 0.7;"></div>
+                    <div class="frame-label" style="top: 10px; left: 10px;">OTS SHOT</div>
+                    <div class="frame-label" style="bottom: 10px; right: 10px;">SUBJECT LEFT</div>
+                </div>
+                
+                <div class="stock-hint">
+                    <strong>Stock/AI Production:</strong> Search for "elderly man silhouette balcony sunset" or generate with prompt: "Over-shoulder view of elderly man on balcony at golden hour, contemplative pose, warm lighting"
+                </div>
+                <div class="tech-specs">
+                    <span class="spec-badge">85mm Lens</span>
+                    <span class="spec-badge">f/2.8</span>
+                    <span class="spec-badge">Golden Hour</span>
+                    <span class="spec-badge">Handheld</span>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+            
+            <div class="content-side">
+                <div class="scene-time">0:00 - 0:15</div>
+                <h2 class="scene-title" style="color: #4ADE80;">BORN FROM<br>EXPERIENCE</h2>
+                
+                <div class="director-note">
+                    Open on the founder's weathered hands. Pull back slowly to reveal contemplative expression. Natural light only.
+                </div>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">VOICEOVER</div>
+                    <div class="dialogue-bubble">
+                        "Maintaining independence is an increasing challenge as seniors age. The Kiwi concept grew out of actual experience... living in an assisted living facility."
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h4>Visual Notes</h4>
+                    <ul>
+                        <li>Handheld camera for documentary feel</li>
+                        <li>Warm, golden hour lighting</li>
+                        <li>Focus on human moments, not facility</li>
+                        <li>Subtle rack focus between founder and residents</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </header>
+    </div>
 
-    <main id="dynamic-content" class="mx-4 md:mx-10 pt-8 md:pt-12">
-    </main>
+    <!-- SCENE 2 -->
+    <div class="scene-container" id="scene2">
+        <div class="scene-mega-number">2</div>
+        <div class="scene-grid">
+            <div class="content-side">
+                <div class="scene-time">0:15 - 0:35</div>
+                <h2 class="scene-title" style="color: #F59E0B;">EFFORTLESS<br>INTERACTION</h2>
+                
+                <div class="director-note">
+                    Close-up on Kiwi device. Practical lighting creates soft glow. Sound design crucial here - warm, friendly AI voice.
+                </div>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">DIALOGUE</div>
+                    <div class="dialogue-bubble">
+                        <strong>WOMAN:</strong> "I never liked gadgets. Kiwi isn't one. It just listens."
+                    </div>
+                    <div class="dialogue-bubble kiwi">
+                        <strong>KIWI:</strong> "Good morning. It's 9 AM. Time for your medicine and your morning walk."
+                    </div>
+                </div>
+                
+                <div class="info-box" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.5);">
+                    <h4 style="color: #8B5CF6;">Sound Design</h4>
+                    <ul>
+                        <li>Kiwi voice: Warm, clear, unhurried</li>
+                        <li>Subtle notification chime (musical, not clinical)</li>
+                        <li>Room tone: Quiet morning ambience</li>
+                        <li>Gentle fade between human and AI voices</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="visual-frame">
+                <div class="camera-move">DOLLY + FOCUS PULL</div>
+                <div class="shot-type">EXTREME CLOSE-UP</div>
+                <div class="frame-desc">
+                    <strong>FRAME:</strong> The Kiwi device fills 80% of frame - a sleek, circular watch face with minimalist design. A soft, pulsing green glow emanates from beneath the crystal, creating a halo effect.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div class="frame-subject" style="width: 60%; height: 60%; top: 20%; left: 20%; border-radius: 50%;"></div>
+                    <div class="frame-label" style="top: 10px; left: 10px;">MACRO ECU</div>
+                    <div class="frame-label" style="bottom: 10px; right: 10px;">CENTER FRAME</div>
+                    <div style="position: absolute; width: 80%; height: 80%; top: 10%; left: 10%; border: 2px dashed #F59E0B; border-radius: 50%; opacity: 0.3;"></div>
+                </div>
+                
+                <div class="stock-hint">
+                    <strong>Stock/AI Production:</strong> Search "smartwatch green glow close-up" or AI generate: "Extreme close-up of minimalist smartwatch face with soft green LED glow, black background, product photography style"
+                </div>
+                <div class="tech-specs">
+                    <span class="spec-badge">100mm Macro</span>
+                    <span class="spec-badge">f/4.0</span>
+                    <span class="spec-badge">Practical FX</span>
+                    <span class="spec-badge">2s Dolly</span>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 3 -->
+    <div class="scene-container" id="scene3">
+        <div class="scene-mega-number">3</div>
+        <div class="scene-grid">
+            <div class="visual-frame">
+                <div class="camera-move">STATIC - EMOTIONAL BEAT</div>
+                <div class="shot-type">SPLIT SCREEN COMPOSITE</div>
+                <div class="frame-desc">
+                    <strong>LEFT FRAME:</strong> Mother in warm-lit apartment, morning sun through sheer curtains. She sits at kitchen table, Kiwi watch visible. Her face shows gentle satisfaction.
+                </div>
+                <div class="frame-desc">
+                    <strong>RIGHT FRAME:</strong> Son in modern office, cool blue-gray tones. Laptop open to Kiwi dashboard. Green checkmark animates. His tense shoulders visibly relax.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div style="position: absolute; width: 49%; height: 100%; left: 0; border-right: 3px solid #4ADE80;">
+                        <div class="frame-subject" style="width: 60%; height: 50%; top: 25%; left: 20%; background: #F59E0B33;"></div>
+                        <div class="frame-label" style="top: 10px; left: 10px;">WARM TONES</div>
+                    </div>
+                    <div style="position: absolute; width: 49%; height: 100%; right: 0;">
+                        <div class="frame-subject" style="width: 60%; height: 50%; top: 25%; left: 20%; background: #3B82F633;"></div>
+                        <div class="frame-label" style="top: 10px; right: 10px;">COOL TONES</div>
+                    </div>
+                    <div class="frame-label" style="bottom: 10px; left: 45%;">SPLIT</div>
+                </div>
+                
+                <div class="stock-hint">
+                    <strong>Stock/AI Production:</strong> Create two separate shots - "elderly woman at kitchen table smiling" + "businessman at laptop relieved expression". Composite in editing with split screen effect.
+                </div>
+                <div class="tech-specs">
+                    <span class="spec-badge">2.35:1 Aspect</span>
+                    <span class="spec-badge">Color Split</span>
+                    <span class="spec-badge">Match Cut</span>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+            
+            <div class="content-side">
+                <div class="scene-time">0:35 - 0:50</div>
+                <h2 class="scene-title" style="background: linear-gradient(45deg, #4ADE80, #F59E0B); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CONNECTED<br>CARE</h2>
+                
+                <div class="director-note">
+                    The emotional center. Hold on son's relieved smile. This is why we're doing this.
+                </div>
+                
+                <div class="info-box" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.5);">
+                    <h4>Storyboard Technique</h4>
+                    <p style="color: #86EFAC; margin-bottom: 20px;">Split screen divides with animated line. Left side warm tones (mother), right side cool tones (son's office). Green checkmark animates with satisfaction.</p>
+                    <div style="display: flex; justify-content: space-between; color: #4ADE80; font-size: 14px;">
+                        <span>FRAME 1: Woman speaks</span>
+                        <span>FRAME 2: Dashboard updates</span>
+                        <span>FRAME 3: Son's relief</span>
+                    </div>
+                </div>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">VISUAL METAPHOR</div>
+                    <p style="color: #9CA3AF; font-size: 18px;">The split screen represents connection across distance. The green checkmark is peace of mind made visible.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 4 -->
+    <div class="scene-container" id="scene4">
+        <div class="scene-mega-number">4</div>
+        <div class="scene-grid">
+            <div class="content-side">
+                <div class="scene-time">0:50 - 1:05</div>
+                <h2 class="scene-title" style="color: #8B5CF6;">SUPPORTING THE<br>SUPPORTERS</h2>
+                
+                <div class="director-note">
+                    Show the ripple effect. Quick montage of nurses being more present. Less paperwork, more humanity.
+                </div>
+                
+                <div class="info-box">
+                    <h4>Montage Sequence</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
+                        <div style="background: #1F2937; padding: 20px; text-align: center; border-radius: 8px;">
+                            <p style="color: #6B7280; font-size: 14px;">0:50-0:53</p>
+                            <p style="color: #E5E7EB;">Nurse checks tablet</p>
+                        </div>
+                        <div style="background: #1F2937; padding: 20px; text-align: center; border-radius: 8px;">
+                            <p style="color: #6B7280; font-size: 14px;">0:53-0:57</p>
+                            <p style="color: #E5E7EB;">Green checkmarks</p>
+                        </div>
+                        <div style="background: #1F2937; padding: 20px; text-align: center; border-radius: 8px;">
+                            <p style="color: #6B7280; font-size: 14px;">0:57-1:05</p>
+                            <p style="color: #E5E7EB;">Human connection</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-box" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.5);">
+                    <h4 style="color: #F59E0B;">Editing Rhythm</h4>
+                    <p style="color: #FCD34D;">Quick cuts (1-2 seconds each) building energy. Cut on movement. End on held shot of genuine care moment.</p>
+                </div>
+            </div>
+            
+            <div class="visual-frame">
+                <div class="camera-move">HANDHELD ENERGY</div>
+                <div class="shot-type">KINETIC MONTAGE</div>
+                <div class="frame-desc">
+                    <strong>SHOT A (0:50-0:53):</strong> Medium shot of nurse, tablet in hand. Camera slightly handheld. She swipes through Kiwi dashboard. Focus pull from face to screen.
+                </div>
+                <div class="frame-desc">
+                    <strong>SHOT B (0:53-0:57):</strong> Insert shot - tablet screen. Green checkmarks cascade down. Each with subtle haptic glow.
+                </div>
+                <div class="frame-desc">
+                    <strong>SHOT C (0:57-1:05):</strong> Wide shot - nurse kneels to eye level with elderly woman. Genuine laughter shared. Warm afternoon light creates halos.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div class="frame-label" style="top: 10px; left: 10px;">MONTAGE SEQUENCE</div>
+                    <div style="position: absolute; width: 30%; height: 70%; top: 15%; left: 5%; border: 2px solid #8B5CF6;">
+                        <div class="frame-label" style="bottom: -25px; left: 0;">SHOT A</div>
+                    </div>
+                    <div style="position: absolute; width: 30%; height: 70%; top: 15%; left: 35%; border: 2px solid #4ADE80;">
+                        <div class="frame-label" style="bottom: -25px; left: 0;">SHOT B</div>
+                    </div>
+                    <div style="position: absolute; width: 30%; height: 70%; top: 15%; right: 5%; border: 2px solid #F59E0B;">
+                        <div class="frame-label" style="bottom: -25px; left: 0;">SHOT C</div>
+                    </div>
+                </div>
+                
+                <div class="stock-hint">
+                    <strong>Stock/AI Production:</strong> Search "nurse tablet healthcare" + "checkmark animation green" + "nurse elderly care interaction". Or AI generate the sequence focusing on genuine human moments over tech.
+                </div>
+                <div class="tech-specs">
+                    <span class="spec-badge">24-70mm</span>
+                    <span class="spec-badge">Handheld</span>
+                    <span class="spec-badge">Quick Cuts</span>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 5 -->
+    <div class="scene-container" id="scene5">
+        <div class="scene-mega-number">5</div>
+        <div class="scene-grid">
+            <div class="visual-frame">
+                <div class="camera-move">CRANE UP + OUT</div>
+                <div class="shot-type">HERO SHOT</div>
+                <div class="frame-desc">
+                    <strong>FRAME:</strong> Wide exterior. Woman walks confidently on tree-lined path. Golden hour backlighting creates ethereal glow. She's in left third, walking into frame - suggesting forward movement, future.
+                </div>
+                <div class="frame-desc">
+                    <strong>CAMERA:</strong> Starts at eye level, slowly cranes up as she walks, revealing broader world around her. Final frame shows her small but determined against vast, beautiful landscape.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div class="frame-thirds vertical" style="left: 0;"></div>
+                    <div class="frame-thirds vertical" style="left: 33.33%;"></div>
+                    <div class="frame-thirds horizontal" style="top: 0;"></div>
+                    <div class="frame-thirds horizontal" style="top: 33.33%;"></div>
+                    <div class="frame-subject" style="width: 15%; height: 40%; bottom: 20%; left: 10%;"></div>
+                    <div style="position: absolute; bottom: 30%; left: 15%; color: #4ADE80; font-size: 24px;">→</div>
+                    <div class="frame-label" style="top: 10px; left: 10px;">WIDE HERO</div>
+                    <div class="frame-label" style="bottom: 10px; right: 10px;">CRANE UP</div>
+                    <div style="position: absolute; width: 100%; height: 30%; bottom: 0; background: linear-gradient(transparent, #F59E0B33);"></div>
+                </div>
+                
+                <div class="stock-hint">
+                    <strong>Stock/AI Production:</strong> Search "elderly woman walking sunset path independence" or AI prompt: "Cinematic wide shot, elderly woman walking confidently on tree-lined path at golden hour, backlit, rule of thirds composition, uplifting mood"
+                </div>
+                <div class="tech-specs">
+                    <span class="spec-badge">35mm Wide</span>
+                    <span class="spec-badge">Magic Hour</span>
+                    <span class="spec-badge">Crane Shot</span>
+                    <span class="spec-badge">f/5.6</span>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+            
+            <div class="content-side">
+                <div class="scene-time">1:05 - 1:15</div>
+                <h2 class="scene-title" style="color: #4ADE80;">LIVING WITH<br>INDEPENDENCE</h2>
+                
+                <div class="director-note">
+                    The payoff. She's not being watched or monitored - she's living. Kiwi logo appears as elegant watermark, not corporate stamp.
+                </div>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">CLOSING VOICEOVER</div>
+                    <div class="dialogue-bubble">
+                        "It's not about aging. It's about living... with more independence."
+                    </div>
+                </div>
+                
+                <div class="info-box" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(245, 158, 11, 0.1)); border-color: #4ADE80;">
+                    <h4>Final Frame Composition</h4>
+                    <ul>
+                        <li>Rule of thirds: Woman in left third, walking into frame</li>
+                        <li>Depth: Bokeh background suggests life continuing</li>
+                        <li>Color: Warm, life-affirming tones</li>
+                        <li>Logo: Subtle, organic placement</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 50px; padding: 30px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: center;">
+                    <p style="font-size: 48px; font-weight: 900; font-family: 'Bebas Neue', sans-serif; color: #4ADE80; margin-bottom: 10px;">KIWI</p>
+                    <p style="font-size: 20px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.1em;">Independence. Amplified.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-indicator" onclick="scrollToNext()" id="scrollBtn">Next Scene ↓</div>
+    
+    <!-- VISUAL FRAMING GUIDE -->
+    <style>
+        .framing-diagram {
+            width: 100%;
+            height: 200px;
+            background: #111;
+            border: 2px solid #333;
+            position: relative;
+            margin: 20px 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .frame-guide {
+            position: absolute;
+            border: 2px dashed #4ADE80;
+            opacity: 0.5;
+        }
+        
+        .frame-thirds {
+            position: absolute;
+            border: 1px dotted #4ADE8066;
+        }
+        
+        .frame-thirds.vertical {
+            width: 33.33%;
+            height: 100%;
+            border-right: 1px dotted #4ADE8066;
+        }
+        
+        .frame-thirds.horizontal {
+            width: 100%;
+            height: 33.33%;
+            border-bottom: 1px dotted #4ADE8066;
+        }
+        
+        .frame-subject {
+            position: absolute;
+            background: #4ADE8033;
+            border: 2px solid #4ADE80;
+            border-radius: 4px;
+        }
+        
+        .frame-label {
+            position: absolute;
+            background: #000;
+            color: #4ADE80;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 2px;
+        }
+        
+        .stock-hint {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #FCD34D;
+        }
+        
+        .stock-hint strong {
+            color: #F59E0B;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+        }
+    </style>
 
     <script>
-        // Data for all storyboard concepts
-        const allConcepts = {
-            concept2: {
-                name: "Life Uninterrupted",
-                goal: "To show investors the ease and practicality of Kiwi, enhancing independence and emotional well-being for seniors and families.",
-                message: "Kiwi makes life simpler, safer, and seamlessly connected for seniors.",
-                scenes: [
-                    { time: "0-7s", phase: "The Opening", vo: "Independence matters more as we age. Kiwi keeps it simple.", visuals: "An elderly woman quietly enjoys a cup of tea in a calm, sunlit room. She subtly glances at a family photo placed on the table next to her.", text: "", sound: "Calm ambient sounds (clock ticking, gentle breeze). Warm, simple music begins.", image: "https://placehold.co/600x400/ECE9E6/333333?text=Quiet+Morning" },
-                    { time: "8-20s", phase: "Voice Command Demo", vo: "No menus, no passwords—just talk.", visuals: "A clear, calm close-up of the woman speaking naturally, not into a device.\n(Woman's Voice): \"Kiwi, what appointments today?\"\n(Kiwi's Voice): \"Book club at 3 pm.\"", text: "Voice-only interaction.", sound: "Gentle confirmation tone from an unseen source.", image: "https://placehold.co/600x400/4CAF50/FFFFFF?text=Voice+Command" },
-                    { time: "21-35s", phase: "Fall Detection Demo", vo: "Because life doesn't warn you. Kiwi does.", visuals: "The woman is tending to her houseplants. She loses balance slightly; the camera subtly jerks to indicate a stumble. Immediately, a caregiver's phone screen is shown with a clear, calm notification: 'Fall detected at home.'", text: "Automatic fall detection.", sound: "A subtle stumble sound, followed by a clear, non-alarming alert chime.", image: "https://placehold.co/600x400/FFCDD2/B71C1C?text=Fall+Detected" },
-                    { time: "36-48s", phase: "B2B Dashboard Demo", vo: "Better data, proactive care.", visuals: "Quick, clean shot of a nurse reviewing the Kiwi dashboard on a tablet. The UI is simple, showing green checkmarks next to resident names. The nurse calmly taps on one resident to view clear vital signs.", text: "Proactive health monitoring.", sound: "Soft, efficient UI interaction sounds. Music remains professional and calm.", image: "https://placehold.co/600x400/ECE9E6/333333?text=Caregiver+Dashboard" },
-                    { time: "49-60s", phase: "Connectivity Demo", vo: "Simple connections every day.", visuals: "The woman is now relaxing and says comfortably:\n(Woman's Voice): \"Kiwi, call Sarah.\"\nHer daughter's phone rings, the screen clearly labeled 'Mom (Kiwi).'", text: "Seamless daily communication.", sound: "A warm, friendly ringtone.", image: "https://placehold.co/600x400/ECE9E6/333333?text=Phone+Call" },
-                    { time: "61-75s", phase: "The Closing", vo: "Kiwi—life uninterrupted.", visuals: "A warm, authentic shot of the woman smiling, relaxed and satisfied. The video ends with a clean, hero shot of the Kiwi software interface on a modern smartwatch.", text: "Kiwi. Simplifying Senior Care.\nkiwivoiceassistant.com", sound: "Warm, reassuring music swells and concludes on a hopeful note.", image: "https://placehold.co/600x400/004D25/FFFFFF?text=Kiwi+Final+Logo" }
-                ],
-                pillars: [
-                    { title: "Grounded Emotion", description: "Emotion emerges organically from practical, everyday use, not from exaggerated drama. This feels more authentic and trustworthy." },
-                    { title: "Clear Functionality", description: "This concept prioritizes showing the product's core features in a step-by-step, easy-to-understand manner, leaving no doubt about what the product does." },
-                    { title: "User-Centric Narrative", description: "By focusing on a single user's day, the story is instantly relatable and demonstrates the product's value from the most important perspective." },
-                    { title: "Practicality and Simplicity", description: "The core message is one of ease and seamless integration, appealing to anyone who is tired of complicated technology." }
-                ]
-            },
-            concept3: {
-                name: "Through Her Eyes",
-                goal: "To give investors an immersive, first-person perspective into how Kiwi seamlessly integrates into a senior's daily life.",
-                message: "Kiwi provides intuitive, effortless support, directly through the eyes of those it helps.",
-                scenes: [
-                    { time: "0-7s", phase: "The Opening", vo: "My world has changed, but it’s still mine.", visuals: "First-person view (POV): hands making tea, gently touching a family photo on the counter.", text: "", sound: "Quiet home sounds, subtle breathing, the clink of a teacup.", image: "https://placehold.co/600x400/ECE9E6/333333?text=POV:+Making+Tea" },
-                    { time: "8-20s", phase: "Discovery", vo: "I never liked gadgets. Kiwi isn’t one. It listens when I speak.", visuals: "POV as she looks around her living room and speaks calmly into the air:\n(Her Voice): \"Kiwi, remind me about my walk.\"\nWe hear a gentle voice respond from an unseen source.", text: "Voice-activated reminders.", sound: "Her clear voice, followed by a soft confirmation sound.", image: "https://placehold.co/600x400/4CAF50/FFFFFF?text=POV:+Voice+Command" },
-                    { time: "21-35s", phase: "Crisis & Assurance", vo: "It’s reassuring knowing someone’s always listening.", visuals: "POV: a slight stumble while looking down at her feet. The vision blurs for a moment. We hear her soft breathing, then a calm voice from her wrist.\n(Kiwi's Voice): \"Help is on the way.\"", text: "Instant fall detection.", sound: "A subtle stumble sound, her breath, then the calm, reassuring Kiwi voice.", image: "https://placehold.co/600x400/FFCDD2/B71C1C?text=POV:+Stumble" },
-                    { time: "36-48s", phase: "The Caregiver Connection", vo: "Care feels closer now. Less waiting, more living.", visuals: "POV: a nurse's friendly face (slightly blurred) leans into view, smiling warmly.\n(Nurse's Voice): \"Everything okay, dear? We got an alert.\"", text: "Immediate caregiver response.", sound: "Gentle footsteps approaching, a calming human voice.", image: "https://placehold.co/600x400/ECE9E6/333333?text=POV:+Nurse+Arrives" },
-                    { time: "49-60s", phase: "Social Connection", vo: "Life’s small conversations mean more these days.", visuals: "POV looking out a window at birds. She speaks calmly:\n(Her Voice): \"Kiwi, call Sarah.\"\nWe hear the sound of a phone ringing, connecting her to family.", text: "Easy communication.", sound: "Birds chirping outside, then a warm, familiar ringtone.", image: "https://placehold.co/600x400/ECE9E6/333333?text=POV:+Looking+Out+Window" },
-                    { time: "61-75s", phase: "The Closing", vo: "Kiwi. Simplicity I can trust.", visuals: "POV: her hand rests gently on her wrist, over the Kiwi device. The shot is calm and peaceful. The video ends on this intimate, trusting image.", text: "Kiwi. Designed for life.", sound: "Soft, hopeful music swells and concludes.", image: "https://placehold.co/600x400/004D25/FFFFFF?text=POV:+Trust" }
-                ],
-                pillars: [
-                    { title: "Deep Empathy", description: "The first-person POV forces an unparalleled level of emotional immersion, making the user's challenges and triumphs feel personal to the viewer." },
-                    { title: "Experiential Storytelling", description: "Instead of being told how Kiwi works, the viewer experiences it directly. This is a powerful way to demonstrate ease-of-use and intuitive design." },
-                    { title: "Building Intimacy and Trust", description: "The entire concept is built on a foundation of trust. We are in her world, hearing her thoughts, making the final message of 'simplicity I can trust' feel completely earned." },
-                    { title: "Creative & Memorable", description: "This is a bold and artistic approach that will stand out from standard product demos. Its unique perspective is highly memorable." }
-                ]
-            },
-            concept1: {
-                name: "The Promise",
-                goal: "To connect with the viewer on an emotional level, focusing on the family's journey from worry to reassurance. This is the 'why' story.",
-                message: "Kiwi gives families peace of mind by helping seniors stay safe, independent, and connected to the people they love.",
-                scenes: [
-                    { time: "0-10s", phase: "The Hook: The Fear", vo: "After Dad passed, Mom’s world got smaller. My world got filled with a new kind of worry... a constant, low-level hum of 'what if?'", visuals: "A close-up of an old, worn armchair, empty in the morning light. The camera slowly pans to a smartphone on a table showing a list of missed calls from 'Mom.'", text: "", sound: "Gentle piano music. The faint, ambient sound of a clock ticking.", image: "https://placehold.co/600x400/ECE9E6/333333?text=Empty+Chair" },
-                    { time: "10-25s", phase: "The Why: The Question", vo: "Then we found Kiwi. It wasn’t born in a boardroom. It was born from a question: How do we turn worry into connection? How do we build a simpler, more human way to care?", visuals: "Hands at a desk, surrounded by scattered notes, mapping out a problem. Words are circled: 'Isolation,' 'Worry.' In the background, a small, out-of-focus photo of an older, smiling couple. The hand pauses, then firmly circles 'Connection.'", text: "Kiwi. A system of care.", sound: "Music swells with a hopeful cello. The sound of a felt-tip pen circling a word.", image: "https://placehold.co/600x400/004D25/FFFFFF?text=The+Kiwi+System" },
-                    { time: "25-40s", phase: "The How: A Day with Kiwi", vo: "For Mom, there are no screens to navigate. No apps to learn. Just her voice.\n(Mom's Voice): \"Kiwi, remind me, book club at 3.\"\n(Son's Voice): \"And just like that... the worry melts away.\"", visuals: "Close up on Mom’s lips as she speaks clearly. Cut to her son's iPhone lighting up with an incoming call labeled 'Mom (Kiwi).' He answers with a relieved smile. The Kiwi Dashboard briefly flashes on a tablet, showing 'Book Club at 3pm' populating the calendar.", text: "100% Voice Controlled", sound: "Crisp, clear voice command. A gentle confirmation chime. Warm ringtone.", image: "https://placehold.co/600x400/ECE9E6/333333?text=iPhone+Ringing" },
-                    { time: "40-55s", phase: "The Safety Net", vo: "It's more than just a connection. It's a silent guardian, always listening for the moments that matter most.", visuals: "A walking cane leans against a wall. We hear a sharp THUD and the camera jerks slightly. Immediately, we cut to a split screen: the Kiwi Dashboard flashes 'FALL DETECTED' while the son's phone buzzes with the same alert.", text: "Automatic Fall Detection.\nInstant Caregiver Alerts.", sound: "Jarring THUD, followed immediately by a clear, urgent notification chime.", image: "https://placehold.co/600x400/FFCDD2/B71C1C?text=FALL+DETECTED" },
-                    { time: "55-70s", phase: "The Scalable Care", vo: "And that reassurance? It scales. For the amazing people in care facilities, it means less time on paperwork and more time on what matters... care.", visuals: "A nurse’s hands efficiently navigate the Kiwi dashboard on a tablet, showing stable vitals for multiple residents. The nurse smiles and gives a thumbs-up to a resident in the background.", text: "Better Data. Better Care.", sound: "Music becomes more upbeat and confident. Gentle mouse clicks.", image: "https://placehold.co/600x400/ECE9E6/333333?text=Caregiver+Dashboard" },
-                    { time: "70-80s", phase: "The Vision: Empowerment", vo: "It’s not about aging. It’s about living. Empowering my mom empowered our whole family. And that's a future worth building.", visuals: "The empty armchair from the opening shot is now occupied. Mom sits comfortably, reading a book in the sunlight. A final, beautiful hero shot of the Kiwi software interface on a modern smartwatch.", text: "Kiwi.\nkiwivoiceassistant.com", sound: "Music reaches its emotional peak, then fades, leaving a feeling of warmth and hope.", image: "https://placehold.co/600x400/004D25/FFFFFF?text=Kiwi+Final+Logo" }
-                ],
-                pillars: [
-                    { title: "Appeal to Pathos (Emotion)", description: "This concept leads with emotion, creating a powerful, empathetic bond with the viewer by focusing on a universal family story." },
-                    { title: "Authentic Origin", description: "It subtly tells the founder's story through visuals, building trust and showing that the product is mission-driven." },
-                    { title: "Technology as an Enabler", description: "We never lead with tech specs; we lead with the human outcome. The feature is 'voice control'; the outcome is 'the worry melts away.'" },
-                    { title: "The Consequential Business Case", description: "The B2B angle is shown as the logical scaling of the human solution, tying financial growth directly to positive social impact." }
-                ]
-            }
-        };
+        // GSAP Setup
+        gsap.registerPlugin(ScrollTrigger);
 
-        const dynamicContentContainer = document.getElementById('dynamic-content');
-        const tabs = document.querySelectorAll('.concept-tab');
-        const themeToggle = document.getElementById('theme-toggle');
-        const lightIcon = document.getElementById('theme-icon-light');
-        const darkIcon = document.getElementById('theme-icon-dark');
-        let observer;
+        // Scene activation
+        const scenes = document.querySelectorAll('.scene-container');
+        
+        scenes.forEach((scene, index) => {
+            ScrollTrigger.create({
+                trigger: scene,
+                start: 'top center',
+                end: 'bottom center',
+                onEnter: () => scene.classList.add('active'),
+                onEnterBack: () => scene.classList.add('active'),
+            });
+        });
 
-        function setupIntersectionObserver() {
-            if (observer) {
-                observer.disconnect();
-            }
+        // Parallax for scene numbers
+        gsap.utils.toArray('.scene-mega-number').forEach(number => {
+            gsap.to(number, {
+                yPercent: -50,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: number.parentElement,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
 
-            const options = {
-                root: null, 
-                rootMargin: '0px',
-                threshold: 0.5 // Trigger when 50% of the element is visible
-            };
+        // Title animation
+        gsap.from('.mega-title', { 
+            duration: 2, 
+            y: 100, 
+            opacity: 0, 
+            ease: 'power4.out' 
+        });
 
-            observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        document.querySelectorAll('.scene-row').forEach(scene => {
-                            scene.classList.remove('active-scene');
-                        });
-                        entry.target.classList.add('active-scene');
-                    } else {
-                        entry.target.classList.remove('active-scene');
-                    }
-                });
-            }, options);
-
-            const scenes = document.querySelectorAll('.scene-row');
-            scenes.forEach(scene => observer.observe(scene));
-        }
-
-        function renderConcept(conceptKey) {
-            dynamicContentContainer.innerHTML = '';
-            const concept = allConcepts[conceptKey];
-            if (!concept) return;
-
-            const preamble = document.createElement('div');
-            preamble.className = 'glass-surface rounded-2xl p-8 md:p-12 mb-12';
-            
-            preamble.innerHTML = `
-                <h3 class="text-4xl md:text-5xl font-display gradient-text">${concept.name}</h3>
-                <div class="mt-6 space-y-4 text-lg">
-                    <div><h4 class="font-bold text-xl font-display subtle-gradient-text">Our Goal:</h4><p class="light:text-gray-600 dark:text-gray-400">${concept.goal}</p></div>
-                    <div><h4 class="font-bold text-xl font-display subtle-gradient-text">Our Ultimate Message:</h4><p class="light:text-gray-600 dark:text-gray-400">"${concept.message}"</p></div>
-                </div>`;
-            dynamicContentContainer.appendChild(preamble);
-
-            const storyboard = document.createElement('div');
-            storyboard.className = 'space-y-12';
-            concept.scenes.forEach(scene => {
-                const sceneRow = document.createElement('div');
-                sceneRow.className = 'scene-row glass-surface rounded-2xl p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start overflow-hidden';
+        // Scroll to next scene
+        let currentScene = 0;
+        function scrollToNext() {
+            if (currentScene < scenes.length - 1) {
+                currentScene++;
+                scenes[currentScene].scrollIntoView({ behavior: 'smooth' });
                 
-                const lightTextColor = 'var(--text-light-secondary)';
-                const darkTextColor = 'var(--text-dark-secondary)';
-                const lightAccentColor = 'var(--brand-accent-light)';
-                const darkAccentColor = 'var(--brand-accent-dark)';
-
-                sceneRow.innerHTML = `
-                    <div class="lg:col-span-4"><img src="${scene.image}" alt="${scene.phase}" class="w-full rounded-lg shadow-lg object-cover aspect-video lg:aspect-[4/3]"></div>
-                    <div class="lg:col-span-8">
-                        <p class="text-lg font-bold" style="color: ${document.documentElement.classList.contains('dark') ? darkAccentColor : lightAccentColor};">${scene.time}</p>
-                        <h3 class="text-3xl lg:text-4xl font-display mt-1 gradient-text">${scene.phase}</h3>
-                        <div class="mt-6 space-y-5">
-                            <div class="flex items-start"><div class="pt-1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m12 7.5v-1.5a6 6 0 0 0-6-6m-6 6a6 6 0 0 0 6-6m-6 6H6m6 0h6m-6 0H6m0 0v-1.5a6 6 0 0 0-6-6m12 6.375a6.375 6.375 0 1 1-12.75 0 6.375 6.375 0 0 1 12.75 0Z" /></svg></div><div><h4 class="text-xl font-display subtle-gradient-text">Voiceover</h4><p class="text-md whitespace-pre-wrap mt-1 light:text-[${lightTextColor}] dark:text-[${darkTextColor}]">${scene.vo}</p></div></div>
-                            <div class="flex items-start"><div class="pt-1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9A2.25 2.25 0 0 0 13.5 5.25h-9A2.25 2.25 0 0 0 2.25 7.5v9A2.25 2.25 0 0 0 4.5 18.75Z" /></svg></div><div><h4 class="text-xl font-display subtle-gradient-text">Visuals</h4><p class="text-md whitespace-pre-wrap mt-1 light:text-[${lightTextColor}] dark:text-[${darkTextColor}]">${scene.visuals}</p></div></div>
-                            ${scene.text ? `<div class="flex items-start"><div class="pt-1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-6.75 3h9M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg></div><div><h4 class="text-xl font-display subtle-gradient-text">On-Screen Text</h4><p class="text-md whitespace-pre-wrap mt-1 light:text-[${lightTextColor}] dark:text-[${darkTextColor}]">${scene.text}</p></div></div>` : ''}
-                            <div class="flex items-start"><div class="pt-1"><svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /></svg></div><div><h4 class="text-xl font-display subtle-gradient-text">Sound Design</h4><p class="text-md whitespace-pre-wrap mt-1 light:text-[${lightTextColor}] dark:text-[${darkTextColor}]">${scene.sound}</p></div></div>
-                        </div>
-                    </div>`;
-                storyboard.appendChild(sceneRow);
-            });
-            dynamicContentContainer.appendChild(storyboard);
-
-            const pillars = document.createElement('div');
-            pillars.className = 'glass-surface rounded-2xl p-8 md:p-12 mt-16';
-            let pillarsHTML = `<h3 class="text-4xl font-display gradient-text">Our Strategic Approach</h3><div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">`;
-            concept.pillars.forEach(pillar => {
-                pillarsHTML += `<div><h4 class="font-bold text-xl font-display light:text-var(--text-light-primary) dark:text-var(--text-dark-primary)">${pillar.title}</h4><p class="mt-1 text-md light:text-var(--text-light-secondary) dark:text-var(--text-dark-secondary)">${pillar.description}</p></div>`;
-            });
-            pillarsHTML += `</div>`;
-            pillars.innerHTML = pillarsHTML;
-            dynamicContentContainer.appendChild(pillars);
-
-            setupIntersectionObserver();
-        }
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                renderConcept(tab.dataset.concept);
-            });
-        });
-
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
-            document.documentElement.classList.add('dark');
-            document.documentElement.classList.remove('light');
-            lightIcon.classList.add('hidden');
-            darkIcon.classList.remove('hidden');
-        } else {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.classList.add('light');
-            lightIcon.classList.remove('hidden');
-            darkIcon.classList.add('hidden');
-        }
-
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            document.documentElement.classList.toggle('light');
-            
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            
-            lightIcon.classList.toggle('hidden', isDark);
-            darkIcon.classList.toggle('hidden', !isDark);
-
-            const activeTab = document.querySelector('.concept-tab.active');
-            if(activeTab) {
-                renderConcept(activeTab.dataset.concept);
+                // Update button text on last scene
+                if (currentScene === scenes.length - 1) {
+                    document.getElementById('scrollBtn').innerHTML = 'THE END ✓';
+                    document.getElementById('scrollBtn').style.background = '#EF4444';
+                }
             }
+        }
+
+        // Visual frame animations
+        gsap.utils.toArray('.visual-frame').forEach(frame => {
+            gsap.from(frame, {
+                scale: 0.8,
+                opacity: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: frame,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            });
         });
 
-        renderConcept('concept2');
+        // Content animations
+        gsap.utils.toArray('.content-side').forEach(content => {
+            gsap.from(content.children, {
+                x: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: content,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
     </script>
 </body>
 </html>
