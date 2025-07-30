@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIWI: Cinematic Storyboard Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Oswald', sans-serif;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* MASSIVE TITLE TREATMENT */
+        .mega-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(120px, 20vw, 300px);
+            line-height: 0.8;
+            letter-spacing: -0.02em;
+            text-align: center;
+            background: linear-gradient(180deg, #4ADE80 0%, #22C55E 50%, #16A34A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 100px rgba(74, 222, 128, 0.5);
+            margin: 100px 0 50px 0;
+        }
+
+        /* SCENE CONTAINER */
+        .scene-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 50px 20px;
+            border-bottom: 5px solid #4ADE80;
+        }
+
+        .scene-container:nth-child(odd) {
+            background: linear-gradient(135deg, #000 0%, #0A0A0A 100%);
+        }
+
+        .scene-container:nth-child(even) {
+            background: linear-gradient(135deg, #0A0A0A 0%, #111 100%);
+        }
+
+        /* MASSIVE SCENE NUMBERS */
+        .scene-mega-number {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            font-size: 200px;
+            font-weight: 900;
+            font-family: 'Bebas Neue', sans-serif;
+            color: #EF4444;
+            opacity: 0.2;
+            z-index: 1;
+            text-shadow: 0 0 50px rgba(239, 68, 68, 0.5);
+        }
+
+        /* SCENE CONTENT GRID */
+        .scene-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* VISUAL FRAME */
+        .visual-frame {
+            background: #000;
+            border: 8px solid #4ADE80;
+            border-radius: 4px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 
+                0 0 100px rgba(74, 222, 128, 0.3),
+                inset 0 0 50px rgba(0, 0, 0, 0.5);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .visual-frame::before {
+            content: 'VISUAL';
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            background: #000;
+            padding: 5px 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #4ADE80;
+            letter-spacing: 0.1em;
+        }
+
+        /* SHOT TYPE BADGES */
+        .shot-type {
+            background: #F59E0B;
+            color: #000;
+            padding: 10px 30px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 30px;
+            transform: rotate(-2deg);
+            box-shadow: 5px 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* FRAME DESCRIPTION */
+        .frame-desc {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #E5E7EB;
+            margin-bottom: 30px;
+            font-family: 'Crimson Text', serif;
+            font-style: italic;
+        }
+
+        .frame-desc strong {
+            color: #4ADE80;
+            font-style: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        /* CONTENT SIDE */
+        .content-side {
+            padding: 40px;
+        }
+
+        .scene-time {
+            font-size: 24px;
+            color: #4ADE80;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .scene-title {
+            font-size: clamp(48px, 5vw, 72px);
+            font-weight: 900;
+            font-family: 'Bebas Neue', sans-serif;
+            margin-bottom: 40px;
+            line-height: 0.9;
+            text-transform: uppercase;
+        }
+
+        /* DIRECTOR'S NOTE */
+        .director-note {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 6px solid #8B5CF6;
+            padding: 30px;
+            margin: 30px 0;
+            font-size: 18px;
+            font-style: italic;
+            color: #DDD6FE;
+            position: relative;
+            font-family: 'Crimson Text', serif;
+        }
+
+        .director-note::before {
+            content: 'DIRECTOR\'S NOTE';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #000;
+            padding: 5px 15px;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            color: #8B5CF6;
+            font-style: normal;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        /* DIALOGUE STYLING */
+        .dialogue-section {
+            margin: 40px 0;
+        }
+
+        .dialogue-label {
+            font-size: 16px;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .dialogue-bubble {
+            background: #fff;
+            color: #000;
+            padding: 25px 35px;
+            border-radius: 30px 30px 5px 30px;
+            margin: 20px 0;
+            font-size: 20px;
+            line-height: 1.6;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            font-family: 'Crimson Text', serif;
+        }
+
+        .dialogue-bubble.kiwi {
+            background: #4ADE80;
+            color: #000;
+            border-radius: 30px 30px 30px 5px;
+        }
+
+        .dialogue-bubble.alert {
+            background: #EF4444;
+            color: #fff;
+            text-align: center;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .dialogue-bubble strong {
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        /* INFO BOXES */
+        .info-box {
+            background: rgba(31, 41, 55, 0.5);
+            border: 2px solid rgba(75, 85, 99, 0.5);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .info-box h4 {
+            font-size: 20px;
+            color: #4ADE80;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-box ul {
+            list-style: none;
+        }
+
+        .info-box li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .info-box li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #4ADE80;
+            font-size: 20px;
+        }
+
+        /* TIMING BAR */
+        .timing-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: rgba(74, 222, 128, 0.2);
+        }
+
+        .timing-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ADE80, #F59E0B);
+            width: 0;
+            transition: width 2s ease-out;
+        }
+
+        .scene-container.active .timing-fill {
+            width: 100%;
+        }
+
+        /* VISUAL FRAMING GUIDE */
+        .framing-diagram {
+            width: 100%;
+            height: 200px;
+            background: #111;
+            border: 2px solid #333;
+            position: relative;
+            margin: 20px 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .frame-thirds {
+            position: absolute;
+            border: 1px dotted #4ADE8066;
+        }
+        
+        .frame-thirds.vertical {
+            width: 33.33%;
+            height: 100%;
+            border-right: 1px dotted #4ADE8066;
+        }
+        
+        .frame-thirds.horizontal {
+            width: 100%;
+            height: 33.33%;
+            border-bottom: 1px dotted #4ADE8066;
+        }
+        
+        .frame-subject {
+            position: absolute;
+            background: #4ADE8033;
+            border: 2px solid #4ADE80;
+            border-radius: 4px;
+        }
+        
+        .frame-label {
+            position: absolute;
+            background: #000;
+            color: #4ADE80;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 2px;
+        }
+        
+        .stock-hint {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #FCD34D;
+        }
+        
+        .stock-hint strong {
+            color: #F59E0B;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .scene-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .scene-mega-number {
+                font-size: 100px;
+                top: 20px;
+                left: 20px;
+            }
+            
+            .visual-frame {
+                min-height: 400px;
+            }
+        }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #4ADE80;
+            color: #000;
+            padding: 15px 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            z-index: 100;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scroll-indicator:hover {
+            background: #22C55E;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- MASSIVE TITLE -->
+    <h1 class="mega-title">KIWI</h1>
+    <p style="text-align: center; font-size: 24px; color: #F59E0B; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 100px;">
+        THE CINEMATIC STORYBOARD
+    </p>
+
+    <!-- SCENE 1 -->
+    <div class="scene-container" id="scene1">
+        <div class="scene-mega-number">1</div>
+        <div class="scene-grid">
+            <div class="visual-frame">
+                <div class="shot-type">OPENING SCENE</div>
+                <div class="frame-desc">
+                    <strong>VISUAL:</strong> We see the weathered profile of our 85-year-old founder, looking out from a balcony over an assisted living facility's garden. Golden hour light creates warm, empathetic tones.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div class="frame-thirds vertical" style="left: 0;"></div>
+                    <div class="frame-thirds vertical" style="left: 33.33%;"></div>
+                    <div class="frame-thirds horizontal" style="top: 0;"></div>
+                    <div class="frame-thirds horizontal" style="top: 33.33%;"></div>
+                    <div class="frame-subject" style="width: 30%; height: 60%; top: 20%; left: 5%; opacity: 0.7;"></div>
+                    <div class="frame-label" style="bottom: 10px; right: 10px;">SUBJECT LEFT</div>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+            
+            <div class="content-side">
+                <div class="scene-time">0:00 - 0:15</div>
+                <h2 class="scene-title" style="color: #4ADE80;">BORN FROM<br>EXPERIENCE</h2>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">VOICEOVER</div>
+                    <div class="dialogue-bubble">
+                        "Maintaining independence is an increasing challenge as seniors age. The Kiwi concept grew out of actual experience living in an assisted living facility."
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h4>Key Messages</h4>
+                    <ul>
+                        <li>Founded by someone who understands the problem</li>
+                        <li>Real experience, not market research</li>
+                        <li>Human-centered approach</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 2 -->
+    <div class="scene-container" id="scene2">
+        <div class="scene-mega-number">2</div>
+        <div class="scene-grid">
+            <div class="content-side">
+                <div class="scene-time">0:15 - 0:35</div>
+                <h2 class="scene-title" style="color: #F59E0B;">EFFORTLESS<br>INTERACTION</h2>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">DIALOGUE</div>
+                    <div class="dialogue-bubble">
+                        <strong>WOMAN:</strong> "I never thought I'd like technology this much. Kiwi just feels natural."
+                    </div>
+                    <div class="dialogue-bubble kiwi">
+                        <strong>KIWI:</strong> "Good morning. It's 9 AM. Time for your medicine and your morning walk."
+                    </div>
+                </div>
+                
+                <div class="info-box" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.5);">
+                    <h4 style="color: #8B5CF6;">Product Features</h4>
+                    <ul>
+                        <li>Voice-first interface</li>
+                        <li>No screens or buttons to navigate</li>
+                        <li>Warm, friendly AI personality</li>
+                        <li>Proactive reminders</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="visual-frame">
+                <div class="shot-type">PRODUCT SHOWCASE</div>
+                <div class="frame-desc">
+                    <strong>VISUAL:</strong> The Kiwi device in close-up - a sleek, minimalist watch with a soft, pulsing green glow. Design emphasizes simplicity and approachability.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div class="frame-subject" style="width: 60%; height: 60%; top: 20%; left: 20%; border-radius: 50%;"></div>
+                    <div class="frame-label" style="top: 10px; left: 10px;">CENTER FRAME</div>
+                    <div style="position: absolute; width: 80%; height: 80%; top: 10%; left: 10%; border: 2px dashed #F59E0B; border-radius: 50%; opacity: 0.3;"></div>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 3 -->
+    <div class="scene-container" id="scene3">
+        <div class="scene-mega-number">3</div>
+        <div class="scene-grid">
+            <div class="visual-frame">
+                <div class="shot-type">FAMILY CONNECTION</div>
+                <div class="frame-desc">
+                    <strong>VISUAL:</strong> Split screen showing mother at home (warm tones) and son at office (cool tones). A green checkmark appears on son's dashboard when mother confirms taking medicine.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div style="position: absolute; width: 49%; height: 100%; left: 0; border-right: 3px solid #4ADE80;">
+                        <div class="frame-subject" style="width: 60%; height: 50%; top: 25%; left: 20%; background: #F59E0B33;"></div>
+                        <div class="frame-label" style="top: 10px; left: 10px;">WARM TONES</div>
+                    </div>
+                    <div style="position: absolute; width: 49%; height: 100%; right: 0;">
+                        <div class="frame-subject" style="width: 60%; height: 50%; top: 25%; left: 20%; background: #3B82F633;"></div>
+                        <div class="frame-label" style="top: 10px; right: 10px;">COOL TONES</div>
+                    </div>
+                    <div class="frame-label" style="bottom: 10px; left: 45%;">SPLIT</div>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+            
+            <div class="content-side">
+                <div class="scene-time">0:35 - 0:50</div>
+                <h2 class="scene-title" style="background: linear-gradient(45deg, #4ADE80, #F59E0B); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CONNECTED<br>CARE</h2>
+                
+                <div class="info-box" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.5);">
+                    <h4>Family Benefits</h4>
+                    <ul>
+                        <li>Real-time status updates</li>
+                        <li>Peace of mind without constant calling</li>
+                        <li>Respects senior's independence</li>
+                        <li>Simple dashboard for family members</li>
+                    </ul>
+                </div>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">INTERACTION</div>
+                    <div class="dialogue-bubble">
+                        <strong>WOMAN:</strong> "Hey Kiwi, I've taken my medicine."
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 4 - WITH FALL DETECTION -->
+    <div class="scene-container" id="scene4">
+        <div class="scene-mega-number">4</div>
+        <div class="scene-grid">
+            <div class="content-side">
+                <div class="scene-time">0:50 - 1:05</div>
+                <h2 class="scene-title" style="color: #8B5CF6;">SUPPORTING THE<br>SUPPORTERS</h2>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">SEQUENCE</div>
+                    <p style="color: #9CA3AF; margin-bottom: 20px;">Nurse reviews dashboard - all residents showing green status.</p>
+                    
+                    <div class="dialogue-bubble alert">
+                        ⚠️ FALL DETECTED: Mary Johnson, Room 203 ⚠️
+                    </div>
+                    
+                    <p style="color: #9CA3AF; margin: 20px 0;">Quick transition to nurse rushing to help.</p>
+                    
+                    <div class="dialogue-bubble">
+                        <strong>NURSE:</strong> "Hey Mary, I'm right here. Let me help you get up safely."
+                    </div>
+                </div>
+                
+                <div class="info-box" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.5);">
+                    <h4 style="color: #F59E0B;">Care Provider Benefits</h4>
+                    <ul>
+                        <li>Instant emergency alerts</li>
+                        <li>3x faster response times</li>
+                        <li>Less paperwork, more care time</li>
+                        <li>Comprehensive resident overview</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="visual-frame">
+                <div class="shot-type">EMERGENCY RESPONSE</div>
+                <div class="frame-desc">
+                    <strong>VISUAL A:</strong> Nurse checking tablet with green checkmarks for all residents.
+                </div>
+                <div class="frame-desc">
+                    <strong>VISUAL B:</strong> Red alert flashes on screen - fall detection notification.
+                </div>
+                <div class="frame-desc">
+                    <strong>VISUAL C:</strong> Nurse helping elderly woman up, human connection moment.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div class="frame-label" style="top: 10px; left: 10px;">3-SHOT SEQUENCE</div>
+                    <div style="position: absolute; width: 30%; height: 70%; top: 15%; left: 5%; border: 2px solid #8B5CF6;">
+                        <div class="frame-label" style="bottom: -25px; left: 0;">NORMAL</div>
+                    </div>
+                    <div style="position: absolute; width: 30%; height: 70%; top: 15%; left: 35%; border: 2px solid #EF4444;">
+                        <div class="frame-label" style="bottom: -25px; left: 0;">ALERT</div>
+                    </div>
+                    <div style="position: absolute; width: 30%; height: 70%; top: 15%; right: 5%; border: 2px solid #F59E0B;">
+                        <div class="frame-label" style="bottom: -25px; left: 0;">RESPONSE</div>
+                    </div>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 5 -->
+    <div class="scene-container" id="scene5">
+        <div class="scene-mega-number">5</div>
+        <div class="scene-grid">
+            <div class="visual-frame">
+                <div class="shot-type">CLOSING SHOT</div>
+                <div class="frame-desc">
+                    <strong>VISUAL:</strong> Wide shot of woman walking confidently on a tree-lined path. Golden hour light creates an uplifting, hopeful mood. She's living freely, not being monitored.
+                </div>
+                
+                <!-- VISUAL FRAMING DIAGRAM -->
+                <div class="framing-diagram">
+                    <div class="frame-thirds vertical" style="left: 0;"></div>
+                    <div class="frame-thirds vertical" style="left: 33.33%;"></div>
+                    <div class="frame-thirds horizontal" style="top: 0;"></div>
+                    <div class="frame-thirds horizontal" style="top: 33.33%;"></div>
+                    <div class="frame-subject" style="width: 15%; height: 40%; bottom: 20%; left: 10%;"></div>
+                    <div style="position: absolute; bottom: 30%; left: 15%; color: #4ADE80; font-size: 24px;">→</div>
+                    <div class="frame-label" style="bottom: 10px; right: 10px;">WALKING INTO FUTURE</div>
+                </div>
+                <div class="timing-bar">
+                    <div class="timing-fill"></div>
+                </div>
+            </div>
+            
+            <div class="content-side">
+                <div class="scene-time">1:05 - 1:15</div>
+                <h2 class="scene-title" style="color: #4ADE80;">LIVING WITH<br>INDEPENDENCE</h2>
+                
+                <div class="dialogue-section">
+                    <div class="dialogue-label">CLOSING VOICEOVER</div>
+                    <div class="dialogue-bubble">
+                        "It's not about aging. It's about living my life free of restrictions."
+                    </div>
+                </div>
+                
+                <div class="info-box" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(245, 158, 11, 0.1)); border-color: #4ADE80;">
+                    <h4>The Kiwi Promise</h4>
+                    <ul>
+                        <li>Dignity through independence</li>
+                        <li>Technology that empowers, not restricts</li>
+                        <li>Peace of mind for everyone</li>
+                        <li>Living life on your own terms</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 50px; padding: 30px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: center;">
+                    <p style="font-size: 48px; font-weight: 900; font-family: 'Bebas Neue', sans-serif; color: #4ADE80; margin-bottom: 10px;">KIWI</p>
+                    <p style="font-size: 20px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.1em;">Independence. Amplified.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-indicator" onclick="scrollToNext()" id="scrollBtn">Next Scene ↓</div>
+
+    <script>
+        // GSAP Setup
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Scene activation
+        const scenes = document.querySelectorAll('.scene-container');
+        
+        scenes.forEach((scene, index) => {
+            ScrollTrigger.create({
+                trigger: scene,
+                start: 'top center',
+                end: 'bottom center',
+                onEnter: () => scene.classList.add('active'),
+                onEnterBack: () => scene.classList.add('active'),
+            });
+        });
+
+        // Parallax for scene numbers
+        gsap.utils.toArray('.scene-mega-number').forEach(number => {
+            gsap.to(number, {
+                yPercent: -50,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: number.parentElement,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+
+        // Title animation
+        gsap.from('.mega-title', { 
+            duration: 2, 
+            y: 100, 
+            opacity: 0, 
+            ease: 'power4.out' 
+        });
+
+        // Scroll to next scene
+        let currentScene = 0;
+        function scrollToNext() {
+            if (currentScene < scenes.length - 1) {
+                currentScene++;
+                scenes[currentScene].scrollIntoView({ behavior: 'smooth' });
+                
+                // Update button text on last scene
+                if (currentScene === scenes.length - 1) {
+                    document.getElementById('scrollBtn').innerHTML = 'THE END ✓';
+                    document.getElementById('scrollBtn').style.background = '#EF4444';
+                }
+            }
+        }
+
+        // Visual frame animations
+        gsap.utils.toArray('.visual-frame').forEach(frame => {
+            gsap.from(frame, {
+                scale: 0.8,
+                opacity: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: frame,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+
+        // Content animations
+        gsap.utils.toArray('.content-side').forEach(content => {
+            gsap.from(content.children, {
+                x: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: content,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+    </script>
+</body>
+</html>
