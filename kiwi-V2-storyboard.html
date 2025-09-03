@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIWI Investor Cut - Visual Storyboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #4ADE80;
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4ADE80, #00D4FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+        
+        .runtime-bar {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .runtime-segment {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 0 2px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .runtime-segment:hover {
+            transform: scale(1.05);
+        }
+        
+        .seg-1 { background: #FF6B6B; }
+        .seg-2 { background: #4ECDC4; }
+        .seg-3 { background: #45B7D1; }
+        .seg-4 { background: #FFA07A; }
+        .seg-5 { background: #98D8C8; }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .section-number {
+            font-size: 60px;
+            font-weight: bold;
+            margin-right: 20px;
+            background: linear-gradient(45deg, #4ADE80, #00D4FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-title {
+            flex: 1;
+        }
+        
+        .section-title h2 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .section-title p {
+            opacity: 0.8;
+            font-size: 16px;
+        }
+        
+        .shot-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .shot {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 120px 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .shot:hover {
+            border-color: #4ADE80;
+            transform: translateX(10px);
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .shot-time {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .shot-time .time {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4ADE80;
+        }
+        
+        .shot-time .duration {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        
+        .shot-visual {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 120px;
+        }
+        
+        .shot-visual h3 {
+            font-size: 18px;
+            color: #00D4FF;
+            margin-bottom: 10px;
+        }
+        
+        .shot-visual p {
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+        
+        .shot-audio {
+            background: rgba(74, 222, 128, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #4ADE80;
+            min-height: 120px;
+        }
+        
+        .shot-audio h3 {
+            font-size: 18px;
+            color: #4ADE80;
+            margin-bottom: 10px;
+        }
+        
+        .shot-audio p {
+            font-size: 14px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+        
+        .editor-note {
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #FFA500;
+        }
+        
+        .editor-note strong {
+            color: #FFA500;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .key-changes {
+            background: rgba(255, 0, 128, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(255, 0, 128, 0.3);
+        }
+        
+        .key-changes h2 {
+            color: #FF0080;
+            margin-bottom: 20px;
+        }
+        
+        .key-changes ul {
+            list-style: none;
+        }
+        
+        .key-changes li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .key-changes li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ADE80;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 5px;
+            font-weight: bold;
+        }
+        
+        .tag.new {
+            background: rgba(255, 0, 128, 0.3);
+            color: #FFB6C1;
+        }
+        
+        .tag.critical {
+            background: rgba(255, 0, 0, 0.3);
+            color: #FF6B6B;
+        }
+        
+        .tag.b2b {
+            background: rgba(0, 212, 255, 0.3);
+            color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>KIWI INVESTOR CUT STORYBOARD</h1>
+        <p>Target Runtime: 80-85 seconds | Audience: Investors & Facility Management</p>
+    </div>
+    
+    <div class="runtime-bar">
+        <div class="runtime-segment seg-1">Challenge<br>0:00-0:18</div>
+        <div class="runtime-segment seg-2">Features<br>0:19-0:35</div>
+        <div class="runtime-segment seg-3">Daily Life<br>0:36-0:49</div>
+        <div class="runtime-segment seg-4">B2B Value<br>0:50-1:09</div>
+        <div class="runtime-segment seg-5">Close<br>1:10-1:25</div>
+    </div>
+    
+    <div class="container">
+        
+        <div class="key-changes">
+            <h2>🔥 CRITICAL UPDATES FROM FEEDBACK</h2>
+            <ul>
+                <li>NEW voiceover artist required (current narrator must be replaced)</li>
+                <li>Features introduced EARLY (Vitals, Calendar, 24/7 Monitoring at 0:26)</li>
+                <li>Removed awkward "Falls demand seconds" → Now "3x faster response"</li>
+                <li>Fixed jarring transition at 0:49 with smooth wipe</li>
+                <li>Dashboard screens now INTERACTIVE (scrolling, not static)</li>
+                <li>Added "meeting an unmet need" for investor appeal</li>
+                <li>Shortened runtime from 96s to 85s max</li>
+            </ul>
+        </div>
+        
+        <!-- SECTION 1 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <div class="section-title">
+                    <h2>The Challenge & The Solution</h2>
+                    <p>Establishing empathy and introducing KIWI</p>
+                </div>
+            </div>
+            
+            <div class="shot-grid">
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:00</div>
+                        <div class="duration">5 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Existing footage (0:00-0:04) - Man on balcony at sunrise, contemplative look</p>
+                        <span class="tag">Existing</span>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"Maintaining independence is a growing challenge as we age. But the technology designed to help often just gets in the way."</p>
+                        <span class="tag new">NEW VO</span>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:06</div>
+                        <div class="duration">4 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Existing footage (0:19-0:22) - Dynamic shot of KIWI watch on table, screen activates with logo</p>
+                        <span class="tag">Existing</span>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"Introducing Kiwi. It's not just another gadget; it's a proactive, talking senior daily assistant."</p>
+                        <span class="tag critical">NO "Kiwi Concept"</span>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:11</div>
+                        <div class="duration">7 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Woman doing yoga (0:29) → Group socializing at table (0:32). Watch MUST be visible</p>
+                        <span class="tag">Popular Shots</span>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>Senior Testimonial: "I hate gadgets. But with Kiwi, I just wear the watch on my wrist, and Kiwi takes care of everything else."</p>
+                        <div class="editor-note">
+                            <strong>Audio Fix:</strong>
+                            Remove background noise noted at 0:20 in previous cut
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 2 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <div class="section-title">
+                    <h2>Core Features & Differentiators</h2>
+                    <p>Speed, proactive monitoring, comprehensive care</p>
+                </div>
+            </div>
+            
+            <div class="shot-grid">
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:19</div>
+                        <div class="duration">6 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Graphics (0:35-0:38) - White background, KIWI watch centered, emphasize speed</p>
+                        <p><strong>Text Overlay:</strong> "Responds 3x Faster¹"</p>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"When an emergency happens, response time is critical. Kiwi automatically detects falls and alerts caregivers instantly—three times faster than traditional systems."</p>
+                        <span class="tag new">REWORKED</span>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:26</div>
+                        <div class="duration">9 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Graphics (0:40-0:44) - Watch visualization continues</p>
+                        <p><strong>Dynamic Text Overlays:</strong></p>
+                        <ul>
+                            <li>Real-Time Vitals (BP, SpO2, HR)</li>
+                            <li>Medication & Calendar Sync</li>
+                            <li>24/7 Monitoring</li>
+                        </ul>
+                        <span class="tag critical">EARLY FEATURES</span>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"But we believe in proactive care. Kiwi provides continuous 24/7 monitoring of vital signs—BP, SpO2, and heart rate—and ensures they never miss an appointment or a dose."</p>
+                        <span class="tag b2b">Investor Focus</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 3 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <div class="section-title">
+                    <h2>Daily Life Integration & Adherence</h2>
+                    <p>Voice interaction and family peace of mind</p>
+                </div>
+            </div>
+            
+            <div class="shot-grid">
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:36</div>
+                        <div class="duration">1 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>TRANSITION FIX: Smooth wipe from watch graphic to next scene</p>
+                        <span class="tag critical">FIX</span>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>Sound effect: Subtle 'swoosh'</p>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:38</div>
+                        <div class="duration">4 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Footage (~1:05) - Close-up on senior's wrist speaking to watch</p>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>Sync Sound: "Hey Kiwi, I've taken my medicine."</p>
+                        <p>Kiwi Response: (Gentle confirmation chime)</p>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:43</div>
+                        <div class="duration">6 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Footage (0:50-0:53) - Split screen: Senior content / Son checking phone with relief</p>
+                        <p><strong>COMPOSITE:</strong> Clear "Medication Taken ✓" notification on son's device</p>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>Senior Testimonial: "My son doesn't have to worry if I've taken my meds or how I'm doing—Kiwi keeps him updated."</p>
+                        <span class="tag new">SPECIFIC SCRIPT</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 4 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <div class="section-title">
+                    <h2>B2B Value Proposition & Data</h2>
+                    <p>Facility integration and operational efficiency</p>
+                </div>
+            </div>
+            
+            <div class="shot-grid">
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:50</div>
+                        <div class="duration">5 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Footage (1:24) - Nurse/facility manager with tablet in professional setting</p>
+                        <span class="tag b2b">B2B Focus</span>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"For elderly care facilities and hospitals, Kiwi integrates seamlessly, providing complete situational awareness."</p>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">0:56</div>
+                        <div class="duration">8 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Footage (1:22/1:26) - Tablet/laptop screens WITH ACTIVE SCROLLING</p>
+                        <p><strong>CRITICAL COMPOSITE:</strong> Replace green screens with realistic KIWI Dashboard UI showing:</p>
+                        <ul>
+                            <li>Multiple resident profiles</li>
+                            <li>Live vitals charts</li>
+                            <li>Alert status indicators</li>
+                        </ul>
+                        <div class="editor-note">
+                            <strong>Fix Required:</strong>
+                            Previous version too static at 1:29 - must show active interaction/scrolling
+                        </div>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"Our dashboard delivers critical real-time data, allowing staff to track vitals, ensure adherence, and identify risks before emergencies happen."</p>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">1:05</div>
+                        <div class="duration">4 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Footage (1:16) - Doctor/Nurse interacting confidently with tablet</p>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"Streamlining operations, improving resident outcomes, and increasing efficiency."</p>
+                        <span class="tag">ROI Focus</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 5 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <div class="section-title">
+                    <h2>The Investor Pitch & Conclusion</h2>
+                    <p>Market opportunity and emotional close</p>
+                </div>
+            </div>
+            
+            <div class="shot-grid">
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">1:10</div>
+                        <div class="duration">5 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>Montage: Active seniors walking, interacting with family</p>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"By combining intuitive voice technology with proactive monitoring, we are meeting a significant, unmet need in senior care."</p>
+                        <span class="tag critical">INVESTOR HOOK</span>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">1:16</div>
+                        <div class="duration">4 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Footage (1:30-1:34) - Main character looking at camera, warm smile</p>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"It's not just about aging. It's about living life to the fullest."</p>
+                    </div>
+                </div>
+                
+                <div class="shot">
+                    <div class="shot-time">
+                        <div class="time">1:21</div>
+                        <div class="duration">4 sec</div>
+                    </div>
+                    <div class="shot-visual">
+                        <h3>Visual</h3>
+                        <p>REUSE: Graphics (1:36) - KIWI watch on white background, logo and tagline</p>
+                    </div>
+                    <div class="shot-audio">
+                        <h3>Audio</h3>
+                        <p>"Kiwi. Independence Amplified."</p>
+                        <div class="editor-note">
+                            <strong>Audio Note:</strong>
+                            Use subtle reverb if desired, but AVOID the echo issue at 0:47/1:35 in previous cut
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
