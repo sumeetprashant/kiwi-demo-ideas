@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KIWI — Unified Investor + Facilities Storyboard (V3 — Hybrid Hook & Named Proof)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#000;color:#fff;font-family:'Oswald',sans-serif;overflow-x:hidden}
+    .mega-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(120px,20vw,300px);line-height:.8;letter-spacing:-.02em;text-align:center;background:linear-gradient(180deg,#4ADE80 0%,#22C55E 50%,#16A34A 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 100px rgba(74,222,128,.5);margin:80px 0 10px}
+    .subhead{ text-align:center; font-size:22px; color:#9CA3AF; letter-spacing:.12em; text-transform:uppercase; margin-bottom:60px }
+
+    .scene-container{min-height:100vh;display:flex;align-items:center;position:relative;padding:50px 20px;border-bottom:5px solid #4ADE80}
+    .scene-container:nth-child(odd){background:linear-gradient(135deg,#000 0%,#0A0A0A 100%)}
+    .scene-container:nth-child(even){background:linear-gradient(135deg,#0A0A0A 0%,#111 100%)}
+    .scene-mega-number{position:absolute;top:40px;left:40px;font-size:180px;font-weight:900;font-family:'Bebas Neue',sans-serif;color:#EF4444;opacity:.2;z-index:1;text-shadow:0 0 50px rgba(239,68,68,.5)}
+    .scene-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:2}
+    .visual-frame{background:#000;border:8px solid #4ADE80;border-radius:4px;padding:40px;position:relative;box-shadow:0 0 100px rgba(74,222,128,.3), inset 0 0 50px rgba(0,0,0,.5);min-height:560px;display:flex;flex-direction:column;justify-content:center}
+    .visual-frame::before{content:'VISUAL';position:absolute;top:-20px;left:30px;background:#000;padding:5px 20px;font-size:20px;font-weight:700;color:#4ADE80;letter-spacing:.1em}
+    .shot-type{background:#F59E0B;color:#000;padding:10px 26px;font-size:16px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:inline-block;margin-bottom:26px;transform:rotate(-2deg);box-shadow:5px 5px 20px rgba(0,0,0,.5)}
+    .frame-desc{font-size:18px;line-height:1.8;color:#E5E7EB;margin-bottom:22px;font-family:'Crimson Text',serif;font-style:italic}
+    .frame-desc strong{color:#4ADE80;font-style:normal;text-transform:uppercase;letter-spacing:.05em;font-family:'Oswald',sans-serif}
+    .content-side{padding:40px;position:relative}
+    .scene-time{font-size:18px;color:#4ADE80;font-weight:700;margin-bottom:16px;letter-spacing:.05em}
+    .scene-title{font-size:clamp(42px,5vw,68px);font-weight:900;font-family:'Bebas Neue',sans-serif;margin-bottom:24px;line-height:.9;text-transform:uppercase}
+    .director-note{background:rgba(139,92,246,.1);border-left:6px solid #8B5CF6;padding:20px;margin:22px 0;font-size:16px;font-style:italic;color:#DDD6FE;position:relative;font-family:'Crimson Text',serif}
+    .director-note::before{content:"DIRECTOR'S NOTE";position:absolute;top:-15px;left:20px;background:#000;padding:4px 12px;font-size:12px;letter-spacing:.1em;color:#8B5CF6;font-style:normal;font-weight:700;font-family:'Oswald',sans-serif}
+    .dialogue-section{margin:26px 0}
+    .dialogue-label{font-size:12px;color:#6B7280;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-weight:600}
+    .dialogue-bubble{background:#fff;color:#000;padding:20px 26px;border-radius:24px 24px 5px 24px;margin:14px 0;font-size:18px;line-height:1.6;box-shadow:0 10px 40px rgba(0,0,0,.3);position:relative;font-family:'Crimson Text',serif}
+    .dialogue-bubble.kiwi{background:#4ADE80;color:#000;border-radius:24px 24px 24px 5px}
+    .dialogue-bubble.alert{background:#EF4444;color:#fff;text-align:center;font-weight:700;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.05em;animation:pulse 1s ease-in-out infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    .info-box{background:rgba(31,41,55,.5);border:2px solid rgba(75,85,99,.5);padding:22px;margin:18px 0;border-radius:8px}
+    .info-box h4{font-size:16px;color:#4ADE80;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em}
+    .info-box ul{list-style:none}
+    .info-box li{padding:6px 0;padding-left:24px;position:relative;font-size:15px;line-height:1.6}
+    .info-box li::before{content:'▸';position:absolute;left:0;color:#4ADE80;font-size:18px}
+    .timing-bar{position:absolute;bottom:0;left:0;right:0;height:6px;background:rgba(74,222,128,.2)}
+    .timing-fill{height:100%;background:linear-gradient(90deg,#4ADE80,#F59E0B);width:0;transition:width 2s ease-out}
+    .scene-container.active .timing-fill{width:100%}
+    .framing-diagram{width:100%;height:180px;background:#111;border:2px solid #333;position:relative;margin:16px 0;border-radius:4px;overflow:hidden}
+    .frame-label{position:absolute;background:#000;color:#4ADE80;padding:2px 8px;font-size:11px;font-weight:600;border-radius:2px}
+    .cta-card{background:rgba(17,24,39,.8); border:1px solid rgba(74,222,128,.3); border-radius:16px; padding:24px}
+    .cta-btn{display:inline-block; padding:10px 16px; border-radius:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase}
+    .cta-btn.inv{background:#4ADE80; color:#000}
+    .cta-btn.fac{background:#22C55E; color:#000}
+
+    /* Investor-style HUD elements */
+    .time-badge{position:absolute; top:14px; left:16px; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.55); color:#86EFAC; padding:4px 10px; border-radius:10px; font-size:12px; font-weight:800; letter-spacing:.06em}
+    .stat-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:10px}
+    .stat-card{background:rgba(239,68,68,.12); border:2px solid rgba(239,68,68,.45); border-radius:14px; padding:16px}
+    .stat-num{font-family:'Bebas Neue',sans-serif; font-size:48px; color:#F87171; letter-spacing:.03em}
+    .stat-lbl{text-transform:uppercase; font-size:12px; letter-spacing:.12em; color:#FCA5A5}
+
+    /* Table styling (brand-named) */
+    table.compare{width:100%; border-collapse:collapse; font-size:14px}
+    table.compare thead th{background:#0A0F0A; padding:10px; border-bottom:1px solid #0f291e}
+    table.compare th,table.compare td{padding:12px 10px; text-align:center; border-bottom:1px solid #0f291e}
+    .kiwi-col{background:rgba(16,185,129,.15); font-weight:900; color:#bbf7d0}
+    .feat-col{text-align:left; font-weight:700; color:#E5E7EB}
+    .check{color:#4ADE80; font-weight:900}
+    .cross{color:#EF4444; font-weight:900}
+    .partial{color:#FBBF24; font-weight:700}
+
+    @media (max-width:1024px){.scene-grid{grid-template-columns:1fr}.scene-mega-number{font-size:100px;top:20px;left:20px}.visual-frame{min-height:420px}}
+  </style>
+</head>
+<body>
+  <h1 class="mega-title">KIWI</h1>
+  <p class="subhead">Unified cut for <span style="color:#4ADE80">Investors</span> & <span style="color:#4ADE80">Elderly‑Care Facilities</span> — single film</p>
+
+  <!-- SCENE 1: HYBRID HOOK — GOLDEN HOUR + CRISIS CARDS OVERLAY -->
+  <section class="scene-container" id="scene1">
+    <div class="scene-mega-number">1</div>
+    <div class="scene-grid">
+      <div class="visual-frame">
+        <div class="shot-type">OPENING • GOLDEN HOUR + STATS</div>
+        <div class="time-badge">0:00 – 0:10</div>
+        <p class="frame-desc"><strong>VISUAL:</strong> Golden‑hour profile of a senior on a balcony; quiet breath; watch barely visible; <em>slow push‑in</em>. While the shot holds, two red crisis cards float in and out.</p>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-num">$231B</div>
+            <div class="stat-lbl">Market Opportunity</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">82.5%</div>
+            <div class="stat-lbl">Untapped Seniors</div>
+          </div>
+        </div>
+        <div class="framing-diagram mt-4"><div class="frame-label" style="top:10px;left:10px;">TEXT OVERLAY ON SHOT</div></div>
+        <div class="timing-bar"><div class="timing-fill"></div></div>
+      </div>
+      <div class="content-side">
+        <div class="scene-time">VO (over opening shot)</div>
+        <h2 class="scene-title" style="color:#4ADE80;">“IND﻿EPENDENCE IS EVERYTHING.”</h2>
+        <div class="dialogue-section">
+          <div class="dialogue-label">VOICEOVER</div>
+          <div class="dialogue-bubble">“48% of seniors can’t use current tech. 79,000 nurse shortage. The system is failing. Every competitor misses the same thing…”</div>
+          <div class="dialogue-bubble kiwi"><strong>VO CONT’D:</strong> “…make it <strong>voice‑only</strong> and remove the learning curve.”</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 2: WHAT THE WATCH DOES (PRODUCT CORE + FEATURE CARDS) -->
+  <section class="scene-container" id="scene2">
+    <div class="scene-mega-number">2</div>
+    <div class="scene-grid">
+      <div class="content-side">
+        <div class="scene-time">0:10 – 0:22</div>
+        <h2 class="scene-title" style="color:#F59E0B;">WHAT THE WATCH<br>DOES</h2>
+        <div class="dialogue-section">
+          <div class="dialogue-label">KIWI CALL‑OUTS</div>
+          <div class="dialogue-bubble kiwi"><strong>VOICE:</strong> “100% voice‑controlled. No screens, no buttons.”</div>
+          <div class="dialogue-bubble kiwi"><strong>VOICE:</strong> “Continuous vitals: BP, SpO₂, HR — early warning flags.”</div>
+          <div class="dialogue-bubble kiwi"><strong>VOICE:</strong> “Reminders for <strong>medicine</strong>, calendar, daily routines.”</div>
+        </div>
+        <div class="director-note">On‑screen copy remains a single line overlay: <strong>“Faster Response. Smarter Alerts.”</strong> (no hard seconds).</div>
+      </div>
+      <div class="visual-frame">
+        <div class="shot-type">PRODUCT SHOWCASE + FEATURE GRID</div>
+        <p class="frame-desc"><strong>VISUAL:</strong> Macro dolly on watch; glow pulses with each capability call‑out. Then a clean 6‑card feature grid fades up.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-2">
+          <div class="bg-neutral-900/70 border border-emerald-400/30 rounded-xl p-4"><div class="text-3xl mb-2">🎙️</div><div class="text-emerald-400 text-xs tracking-widest uppercase font-bold">Voice‑Only</div><div class="text-sm opacity-90">Speak naturally, nothing to learn.</div></div>
+          <div class="bg-neutral-900/70 border border-emerald-400/30 rounded-xl p-4"><div class="text-3xl mb-2">🩺</div><div class="text-emerald-400 text-xs tracking-widest uppercase font-bold">Vitals</div><div class="text-sm opacity-90">BP, SpO₂, HR — continuous trends.</div></div>
+          <div class="bg-neutral-900/70 border border-emerald-400/30 rounded-xl p-4"><div class="text-3xl mb-2">🛡️</div><div class="text-emerald-400 text-xs tracking-widest uppercase font-bold">Fall Detection</div><div class="text-sm opacity-90">Automatic alerts for faster response.</div></div>
+          <div class="bg-neutral-900/70 border border-emerald-400/30 rounded-xl p-4"><div class="text-3xl mb-2">💊</div><div class="text-emerald-400 text-xs tracking-widest uppercase font-bold">Medicine Reminders</div><div class="text-sm opacity-90">Adherence without screens.</div></div>
+          <div class="bg-neutral-900/70 border border-emerald-400/30 rounded-xl p-4"><div class="text-3xl mb-2">👨‍👩‍👦</div><div class="text-emerald-400 text-xs tracking-widest uppercase font-bold">Family Updates</div><div class="text-sm opacity-90">Automatic status sharing.</div></div>
+          <div class="bg-neutral-900/70 border border-emerald-400/30 rounded-xl p-4"><div class="text-3xl mb-2">🏥</div><div class="text-emerald-400 text-xs tracking-widest uppercase font-bold">Facility Dashboard</div><div class="text-sm opacity-90">Built for nurse‑station workflows.</div></div>
+        </div>
+        <div class="framing-diagram mt-4"><div class="frame-label" style="top:10px;left:10px;">CENTERED MACRO → GRID</div></div>
+        <div class="timing-bar"><div class="timing-fill"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 3: DAILY LIFE (HUMAN PROOF) -->
+  <section class="scene-container" id="scene3">
+    <div class="scene-mega-number">3</div>
+    <div class="scene-grid">
+      <div class="visual-frame">
+        <div class="shot-type">LIFE MOMENTS</div>
+        <p class="frame-desc"><strong>VISUAL:</strong> Kitchen sunlight. Wrist close‑up as the senior speaks naturally; subtle on‑screen toast after each command.</p>
+        <div class="framing-diagram"><div class="frame-label" style="top:10px;left:10px;">CU • WRIST</div></div>
+        <div class="timing-bar"><div class="timing-fill"></div></div>
+      </div>
+      <div class="content-side">
+        <div class="scene-time">0:22 – 0:32</div>
+        <h2 class="scene-title" style="background: linear-gradient(45deg,#4ADE80,#F59E0B); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">NATURAL VOICE</h2>
+        <div class="dialogue-section">
+          <div class="dialogue-label">DIALOGUE</div>
+          <div class="dialogue-bubble"><strong>WOMAN:</strong> “Hey Kiwi, I’ve taken my <strong>medicine</strong>.”</div>
+          <div class="dialogue-bubble kiwi"><strong>KIWI:</strong> “Got it. I’ll update the family dashboard.”</div>
+          <div class="dialogue-bubble"><strong>WOMAN:</strong> “Hey Kiwi, remind me to call my daughter at <strong>4 PM today</strong>.”</div>
+        </div>
+        <div class="info-box"><h4>Investor lens</h4><ul><li>Usage friction ≈ 0 → higher adherence</li><li>High daily touchpoints → retention moat</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 4: FACILITY VALUE (NO NUISANCE) -->
+  <section class="scene-container" id="scene4">
+    <div class="scene-mega-number">4</div>
+    <div class="scene-grid">
+      <div class="content-side">
+        <div class="scene-time">0:32 – 0:47</div>
+        <h2 class="scene-title" style="color:#8B5CF6;">MADE FOR<br>FACILITIES</h2>
+        <div class="dialogue-section">
+          <div class="dialogue-label">WORKFLOW MOMENT</div>
+          <div class="dialogue-bubble">“Nurse station shows live vitals, falls, and med confirmations. No extra logins, no new screens — it plugs into dashboards you already use.”</div>
+          <div class="dialogue-bubble alert">FALL DETECTED — Room 203</div>
+          <div class="dialogue-bubble"><strong>NURSE:</strong> “On my way, Mary.”</div>
+        </div>
+        <div class="info-box"><h4>Facility benefits</h4><ul><li>Prioritize rounds with real‑time risk signals</li><li>Verify meds taken automatically</li><li>Ease staffing pressure — fewer checks</li></ul></div>
+      </div>
+      <div class="visual-frame">
+        <div class="shot-type">NURSE STATION</div>
+        <p class="frame-desc"><strong>VISUAL:</strong> Census board: green checks across residents; alert flips one tile to red; acknowledgement returns to green.</p>
+        <div class="framing-diagram"><div class="frame-label" style="top:10px;left:10px;">SINGLE PANE</div></div>
+        <div class="timing-bar"><div class="timing-fill"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 5: COMPETITOR EDGE (BRAND‑NAMED TABLE FOR INVESTORS) -->
+  <section class="scene-container" id="scene5">
+    <div class="scene-mega-number">5</div>
+    <div class="scene-grid">
+      <div class="visual-frame">
+        <div class="shot-type">KIWI DOMINATES THE COMPETITION</div>
+        <div class="time-badge">0:47 – 1:02</div>
+        <p class="frame-desc"><strong>VISUAL:</strong> Row‑by‑row build; Kiwi column glows subtly.</p>
+        <table class="compare">
+          <thead>
+            <tr>
+              <th class="feat-col">Features</th>
+              <th class="kiwi-col">Kiwi</th>
+              <th>Fitbit Sense 2</th>
+              <th>Apple Watch 11</th>
+              <th>Medical Guardian</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="feat-col">Real‑time BP</td><td class="kiwi-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="partial">Partial</span></td><td><span class="cross">✗</span></td></tr>
+            <tr><td class="feat-col">Early Warning AI</td><td class="kiwi-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="partial">Limited</span></td><td><span class="cross">✗</span></td></tr>
+            <tr><td class="feat-col">Fall Detection</td><td class="kiwi-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+            <tr><td class="feat-col">Nurse Station Integration</td><td class="kiwi-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+            <tr><td class="feat-col">No Phone Required</td><td class="kiwi-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+            <tr><td class="feat-col">Medical Reminders</td><td class="kiwi-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+            <tr><td class="feat-col">Voice‑Only Interface</td><td class="kiwi-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+            <tr><td class="feat-col">Price</td><td class="kiwi-col">$300–$400</td><td>$250</td><td>$500</td><td>$43.5/mo</td></tr>
+          </tbody>
+        </table>
+        <div class="timing-bar"><div class="timing-fill"></div></div>
+      </div>
+      <div class="content-side">
+        <div class="scene-time">Investor read</div>
+        <h2 class="scene-title" style="color:#4ADE80;">CLEAR, DEFENSIBLE<br>ADVANTAGE</h2>
+        <div class="info-box"><h4>Takeaways</h4><ul><li>Senior‑first jobs‑to‑be‑done covered end‑to‑end</li><li>Adoption unlock: voice‑only, no phone required</li><li>Operational fit for facilities (nurse‑station view)</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 6: BUSINESS MODEL & SCALE -->
+  <section class="scene-container" id="scene6">
+    <div class="scene-mega-number">6</div>
+    <div class="scene-grid">
+      <div class="content-side">
+        <div class="scene-time">1:02 – 1:12</div>
+        <h2 class="scene-title" style="color:#F59E0B;">HOW WE<br>MAKE MONEY</h2>
+        <div class="info-box">
+          <h4>Simple revenue model</h4>
+          <ul>
+            <li><strong>Device:</strong> $300–$400 one‑time</li>
+            <li><strong>Subscription:</strong> $10–$15 / month for insights & alerts</li>
+            <li><strong>B2B:</strong> Bulk deals with facilities; integrates with existing dashboards</li>
+          </ul>
+        </div>
+        <div class="dialogue-section">
+          <div class="dialogue-label">VOICEOVER</div>
+          <div class="dialogue-bubble">“High‑margin software layered on accessible hardware — built for scale.”</div>
+        </div>
+      </div>
+      <div class="visual-frame">
+        <div class="shot-type">UNIT ECONOMICS</div>
+        <p class="frame-desc"><strong>VISUAL:</strong> Animated bars: device revenue + subscription stack; icon row for bulk facility orders.</p>
+        <div class="framing-diagram"><div class="frame-label" style="top:10px;left:10px;">STACKED REVENUE</div></div>
+        <div class="timing-bar"><div class="timing-fill"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 7: SOCIAL PROOF (NAMED, FROM DECK) -->
+  <section class="scene-container" id="scene7">
+    <div class="scene-mega-number">7</div>
+    <div class="scene-grid">
+      <div class="visual-frame">
+        <div class="shot-type">TESTIMONIAL MOMENTS</div>
+        <div class="time-badge">1:12 – 1:22</div>
+        <p class="frame-desc"><strong>VISUAL:</strong> 3 quick quote cards; names and roles exactly from deck. Subtle “EHR‑compatible (FHIR/HL7)” badge only — no vendor logos.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+          <div class="bg-neutral-900/70 border border-neutral-700 rounded-xl p-4"><p class="text-sm">“That’s exactly what I need. When can I buy one?”</p><p class="text-xs text-gray-400 mt-2">— <strong>K.A., 83</strong>, Carleton‑Willard, Bedford, MA</p></div>
+          <div class="bg-neutral-900/70 border border-neutral-700 rounded-xl p-4"><p class="text-sm">“Kiwi would be a big help. It would ease the nurses’ workload to not have to physically take vitals so often and it would save money. We could use less nurses.”</p><p class="text-xs text-gray-400 mt-2">— <strong>K.D.</strong>, Nurse Supervisor, Carleton‑Willard, Bedford, MA</p></div>
+          <div class="bg-neutral-900/70 border border-neutral-700 rounded-xl p-4"><p class="text-sm">“Kiwi’s 24/7 vital tracking supports patients by providing timely alerts on health changes…valuable time for early intervention.”</p><p class="text-xs text-gray-400 mt-2">— <strong>Dr. Sunita Harlalka, M.B.B.S., D.G.O.</strong> Director, Harlalka Hospital; IMA (Indore) VP; FPA (Indore) Past Secretary</p></div>
+        </div>
+        <div class="framing-diagram mt-4"><div class="frame-label" style="top:10px;left:10px;">3‑CARD SLIDE</div></div>
+        <div class="timing-bar"><div class="timing-fill"></div></div>
+      </div>
+      <div class="content-side">
+        <div class="scene-time">Named proof</div>
+        <h2 class="scene-title" style="color:#22C55E;">REAL USERS,<nobr> REAL NAMES</nobr></h2>
+        <div class="info-box"><h4>Signal</h4><ul><li>Resident love → organic demand</li><li>Care team value → operational buy‑in</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 8: PREMIUM PRODUCT HERO ENDING (NO CTA) -->
+  <section class="scene-container" id="scene8">
+    <div class="scene-mega-number">8</div>
+    <div class="scene-grid">
+      <div class="visual-frame">
+        <div class="shot-type">PREMIUM PRODUCT HERO</div>
+        <p class="frame-desc"><strong>VISUAL:</strong> High‑end macro product reel built from your best shots: ultra‑close textures, polished crown, lens flares, soft light sweeps, slow 180° table‑top rotation, and a final straight‑on beauty. Micro UI tags only: <em>Voice‑Only</em> • <em>Vitals</em> • <em>Falls</em> • <em>Medicine</em> • <em>Family</em> • <em>Facility</em>. End on logo lockup.</p>
+        <div class="framing-diagram"><div class="frame-label" style="top:10px;left:10px;">MACRO DOLLY • 180° ROTATION • LIGHT SWEEPS</div></div>
+        <div class="timing-bar"><div class="timing-fill"></div></div>
+      </div>
+      <div class="content-side">
+        <div class="scene-time">1:22 – 1:32</div>
+        <h2 class="scene-title" style="color:#4ADE80;">ONE WATCH.<br>ONE VOICE.</h2>
+        <div class="dialogue-section">
+          <div class="dialogue-label">VOICEOVER — FINAL LINE</div>
+          <div class="dialogue-bubble">“Voice‑only simplicity. Real‑time vitals. Smarter alerts. Built for families and for facilities. <strong>Kiwi — independence, amplified.</strong>”</div>
+        </div>
+        <div class="info-box">
+          <h4>Audio / Mix Notes</h4>
+          <ul>
+            <li>Score: minimal, premium; let the motors/foley breathe on close‑ups.</li>
+            <li>Optional tiny QR bottom‑right (toggle only when needed).</li>
+            <li>No hard seconds anywhere on screen.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+    const scenes=document.querySelectorAll('.scene-container');
+    scenes.forEach(scene=>{ScrollTrigger.create({trigger:scene,start:'top center',end:'bottom center',onEnter:()=>scene.classList.add('active'),onEnterBack:()=>scene.classList.add('active')});});
+    gsap.utils.toArray('.scene-mega-number').forEach(n=>{gsap.to(n,{yPercent:-50,ease:'none',scrollTrigger:{trigger:n.parentElement,start:'top bottom',end:'bottom top',scrub:true}})});
+    gsap.from('.mega-title',{duration:1.8,y:80,opacity:0,ease:'power4.out'});
+    gsap.utils.toArray('.visual-frame').forEach(frame=>{gsap.from(frame,{scale:.85,opacity:0,duration:1,scrollTrigger:{trigger:frame,start:'top 80%',toggleActions:'play none none reverse'}})});
+    gsap.utils.toArray('.content-side').forEach(content=>{gsap.from(content.children,{x:40,opacity:0,duration:.7,stagger:.08,scrollTrigger:{trigger:content,start:'top 80%',toggleActions:'play none none reverse'}})});
+  </script>
+</body>
+</html>
